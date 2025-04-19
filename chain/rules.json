@@ -1,0 +1,9 @@
+{
+  "quorum_weight": 100,
+  "creator_address": "bc1q6n8t4ds9sdlv3x8h3v2mwe4sg9tueq9x7g9xyl",
+  "creator_vote_priority": 1000,
+  "min_vote_weight": 1,
+  "max_vote_weight": 10000,
+  "autonomous_execution": true,
+  "manual_override_enabled": true
+}

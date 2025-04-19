@@ -1,0 +1,16 @@
+{
+  "token_name": "Meredian World Energy",
+  "symbol": "MWE",
+  "decimals": 8,
+  "initial_reward_per_action": 0.1,
+  "commission_per_transaction": 1,
+  "creator_commission_percent": 5,
+  "max_reward_per_second": 10,
+  "max_reward_per_wallet_per_day": 1000,
+  "staking_enabled": true,
+  "dao_enabled": true,
+  "adaptive_emission": true,
+  "ai_autobalance": true,
+  "neuron_dependency": true,
+  "mintable_by_ai": true
+}

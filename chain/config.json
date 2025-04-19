@@ -1,0 +1,9 @@
+{
+  "network_name": "SIMBIOTCHAIN",
+  "version": "1.0",
+  "block_interval": 10,
+  "commission_mwe": 1,
+  "creator_wallet_commission_percent": 5,
+  "creator_wallet_address": "bc1q6n8t4ds9sdlv3x8h3v2mwe4sg9tueq9x7g9xyl",
+"genesis_timestamp": 1745051815  "chain_id": "SIMBIOT-01"
+}

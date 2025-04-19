@@ -1,0 +1,38 @@
+import os
+import threading
+from dotenv import dotenv_values
+
+NEUROHIVE_PATH = "./neurohive"
+LOGS_PATH = "./logs"
+os.makedirs(LOGS_PATH, exist_ok=True)
+
+def run_neuron(env_path):
+    config = dotenv_values(env_path)
+    name = config.get("NEURON_NAME", "Unnamed")
+    api_key = config.get("API_KEY")
+    secret = config.get("API_SECRET")
+    limit = float(config.get("LIMIT_USDT", 100))
+
+    if not api_key or not secret:
+        print(f"[ERROR] Нейрон {name}: нет API ключей")
+        return
+
+    log_file = os.path.join(LOGS_PATH, f"{name}.log")
+    print(f"[NEURON] Запуск: {name}")
+
+    def trade_loop():
+        trader = Trader(api_key=api_key, secret=secret, limit_usdt=limit, neuron_name=name)
+        trader.run(log_path=log_file)
+
+    thread = threading.Thread(target=trade_loop)
+    thread.start()
+
+def load_all_neurons():
+    for filename in os.listdir(NEUROHIVE_PATH):
+        if filename.endswith(".env"):
+            env_path = os.path.join(NEUROHIVE_PATH, filename)
+            run_neuron(env_path)
+
+if __name__ == "__main__":
+    print("[LOADER] Активация всех нейронов...")
+    load_all_neurons()

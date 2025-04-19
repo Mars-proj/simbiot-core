@@ -1,0 +1,15 @@
+*.env
+neurohive/*.env.env
+*.key
+*.pem
+*.log
+nohup.out
+__pycache__/
+*.sqlite3
+node_modules/
+dist/
+build/
+*.apk
+*.aab
+.idea/
+.DS_Store
