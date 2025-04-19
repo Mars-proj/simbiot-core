@@ -44,6 +44,21 @@ class Trader:
             logging.error(f"[{self.neuron_name}] Ошибка при получении пары: {e}")
         return None
 
+    def auto_sell(self):
+        try:
+            balance = self.exchange.fetch_balance()
+            for symbol, amount in balance['total'].items():
+                if symbol != 'USDT' and amount > 0:
+                    market = f"{symbol}/USDT"
+                    if market in self.exchange.markets and self.exchange.markets[market]['active']:
+                        amount = round(amount, 4)
+                        order = self.exchange.create_market_sell_order(market, amount)
+                        logging.info(f"[{self.neuron_name}] SELL {amount} {market} | ордер ID: {order['id']}")
+                        return True
+        except Exception as e:
+            logging.error(f"[{self.neuron_name}] Ошибка при продаже активов: {e}")
+        return False
+
     def run(self, log_path="/dev/null"):
         logging.basicConfig(filename=log_path, level=logging.INFO)
         if not self.exchange:
@@ -55,7 +70,9 @@ class Trader:
                 balance = self.get_balance()
                 if balance < 10:
                     logging.info(f"[{self.neuron_name}] Баланс ниже минимального порога (10 USDT): {balance}")
-                    time.sleep(60)
+                    sold = self.auto_sell()
+                    if not sold:
+                        time.sleep(60)
                     continue
 
                 symbol = self.get_market_symbol()
@@ -66,7 +83,7 @@ class Trader:
 
                 ticker = self.exchange.fetch_ticker(symbol)
                 price = ticker['last']
-                max_trade_amount = round((balance * 0.1) / price, 6)  # 10% от баланса
+                max_trade_amount = round((balance * 0.1) / price, 6)
                 if max_trade_amount * price < 10:
                     logging.info(f"[{self.neuron_name}] Сумма сделки < 10 USDT. Пропускаем.")
                     time.sleep(60)
